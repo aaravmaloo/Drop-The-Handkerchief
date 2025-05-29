@@ -352,10 +352,18 @@ async def run_game_flow(original_channel: discord.TextChannel, player1: discord.
             'game_state') == 'awaiting_roles'):
         print(
             f"DEBUG run_game_flow: Initial state FAILED. P1: {p1_data.get('game_state') if p1_data else 'N/A'}, P2: {p2_data.get('game_state') if p2_data else 'N/A'}")
-        if original_channel: try: await original_channel.send("Critical duel tracking error. Game cancelled.")
-        except: pass
-        _clear_duel_data_for_user(player1.id);
-        _clear_duel_data_for_user(player2.id);
+        if original_channel:
+            try:
+                await original_channel.send("Critical duel tracking error. Game cancelled.")
+            except Exception as e: # Good practice to catch specific exceptions or at least log it
+                print(f"Error sending critical error message to channel: {e}")
+                pass # Continue to cleanup even if sending the message fails
+
+        # These lines should be at the same indentation level as the 'if original_channel:'
+        # if they are meant to run regardless of whether the message was sent,
+        # or inside the 'if not (p1_data...)' block's main scope.
+        _clear_duel_data_for_user(player1.id)
+        _clear_duel_data_for_user(player2.id)
         return
 
     roles = [player1, player2];
