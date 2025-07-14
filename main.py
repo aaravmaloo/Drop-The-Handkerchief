@@ -19,6 +19,9 @@ RESPONSE_TIMEOUT = 30.0
 MAX_NUMBER = 60
 MAX_SCORE_DISPLAY = 300
 
+
+
+
 # --- Global State ---
 scores_data = {}
 active_duels = {}
